@@ -258,6 +258,17 @@ void shabby_shell(const char * tty_name)
 
 	char rdbuf[128];
 
+	shell_routine();
+
+	close(1);
+	close(0);
+}
+
+void shell_routine()
+{
+
+	char rdbuf[128];
+
 	while (1) {
 		write(1, "$ ", 2);
 		int r = read(0, rdbuf, 70);
@@ -322,10 +333,6 @@ void Init()
 	assert(fd_stdin  == 0);
 	int fd_stdout = open("/dev_tty0", O_RDWR);
 	assert(fd_stdout == 1);
-
-	printf("Init() is running ...\n");
-
-	/* extract `cmd.tar' */
 	untar("/cmd.tar");
 			
 
@@ -347,13 +354,17 @@ void Init()
 		}
 	}
 
-	while (1) {
-		int s;
-		int child = wait(&s);
-		//printf("child (%d) exited with status: %d.\n", child, s);
-	}
+	milli_delay(1000);
+	printf("\n");
+	shell_routine();
 
-	assert(0);
+	// while (1) {
+	// 	int s;
+	// 	int child = wait(&s);
+	// 	//printf("child (%d) exited with status: %d.\n", child, s);
+	// }
+
+	// assert(0);
 }
 
 
