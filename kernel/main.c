@@ -263,7 +263,18 @@ void shabby_shell(const char * tty_name)
 	close(1);
 	close(0);
 }
-
+void countOpen()
+{
+	long t=(getticks() - t) * 1000 / HZ;
+	int ms=t%1000;
+	t=t/50000;
+	int s=t%60;
+	t=t/60;
+	int min=t%60;
+	t=t/60;
+	int hour=t;
+	printf("hour:%d  minute:%d  second:%d  ms:%d\n",hour,min,s,ms ); 
+}
 void shell_routine()
 {
 
@@ -298,9 +309,18 @@ void shell_routine()
 		int fd = open(argv[0], O_RDWR);
 		if (fd == -1) {
 			if (rdbuf[0]) {
-				write(1, "{", 1);
-				write(1, rdbuf, r);
-				write(1, "}\n", 2);
+				if (strcmp(rdbuf, "countTime") == 0)
+				{
+					countOpen();
+				}
+				else
+				{
+					printf("Unrecognized command ");
+					write(1, "{", 1);
+					write(1, rdbuf, r);
+					write(1, "}\n", 2);
+				}
+				
 			}
 		}
 		else {
@@ -318,6 +338,95 @@ void shell_routine()
 
 	close(1);
 	close(0);
+}
+
+
+void three()
+{
+	printf("    *****\n");
+	printf("        *\n");
+	printf("    *****\n");
+	printf("        *\n");
+	printf("    *****\n");
+}
+void two()
+{
+	printf("    *****\n");
+	printf("        *\n");
+	printf("    *****\n");
+	printf("    *\n");
+	printf("    *****\n");
+}
+void one()
+{
+	printf("        *\n");
+	printf("        *\n");
+	printf("        *\n");
+	printf("        *\n");
+	printf("        *\n");
+}
+void starting()
+{
+    // int i;
+    // for(i=0;i<5;i++)
+    // {
+    //    // ClearScreen();//使用的函数
+   	// printf("\n\n\n\n\n\n\n\n\n\n");
+    // printf("\t     _.'__    `.\n");
+    // printf("\t  .--(#)(##)---/#\n");
+    // printf("\t.' @          /###\n");
+    // printf("\t:         ,   #####\n");
+    // printf("\t` -..__.-' _.-###/\n");
+    // printf("\t` ;_:    `' \n");
+    // printf("\t .\'\"\"\"\"\"\"\"\\\n");
+    // printf("\t /,      ,''\\\n");
+    // printf("\t //   os    \\\n");
+    // printf("\t `-._______.-'\n");
+    // printf("\t ___`. | .'___\n");
+    // printf("\t (______|______)\n");
+    // printf("\n");
+        
+    //     switch(i){
+    //         case 0: printf("____\n");break;
+    //         case 1:printf(" _______\n");break;
+    //         case 2:printf("  _________\n");break;
+    //         case 3:printf(" _____________\n");break;
+    //         case 4:printf("_________________\n");break;
+    //         case 5:printf("___________________\n");break;
+    //         case 6:printf("______________________\n");break;
+    //         case 7:printf("_________________________\n");break;
+    //         case 8:printf("___________________________\n");break;
+    //         case 9:printf("________________________________\n");break;//要是i=10耗时太长，你就酌情改一下吧
+            
+    //     }
+    // milli_delay(15000);
+    // }
+    printf("\n\n\n\n\n\n\n\n\n\n\n");
+    printf("         _.'__    `.\n");
+    printf("      .--(#)(##)---/#\n");
+    printf("    .' @          /###\n");
+    printf("    :         ,   #####\n");
+    printf("    ` -..__.-' _.-###/\n");
+    printf("    ` ;_:    `' \n");
+    printf("     .\'\"\"\"\"\"\"\"\\\n");
+    printf("     /,      ,''\\\n");
+    printf("     //   os    \\\n");
+    printf("     `-._______.-'\n");
+    printf("     ___`. | .'___\n");
+    printf("     (______|______)\n");
+    printf("\n\n\n\n\n");
+    milli_delay(50000);
+    printf("\n\n\n\n");
+    // for (int i = 0; i < 3; ++i)
+    // {
+    // 	switch(i)
+    // 	{
+    // 		case 0:three();break;
+    // 		case 1:two();break;
+    // 		case 2:one();break;
+    // 	}
+    // 	milli_delay(20000);
+    // }
 }
 
 /*****************************************************************************
@@ -355,16 +464,11 @@ void Init()
 	}
 
 	milli_delay(1000);
+	starting();		
 	printf("\n");
 	shell_routine();
 
-	// while (1) {
-	// 	int s;
-	// 	int child = wait(&s);
-	// 	//printf("child (%d) exited with status: %d.\n", child, s);
-	// }
 
-	// assert(0);
 }
 
 
